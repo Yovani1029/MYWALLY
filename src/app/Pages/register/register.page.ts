@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl, ValidationErrors } from '@angular/forms';
 
 @Component({
   selector: 'app-register',
@@ -17,9 +17,11 @@ export class RegisterPage implements OnInit {
       nombre: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-    });
+      confirmPassword: ['', [Validators.required]]
+    }, { validators: this.passwordsMatchValidator }); // <-- aquí se aplica el validador
   }
 
+  // ✅ Getters para los controles
   get nombreControl(): FormControl {
     return this.form.get('nombre') as FormControl;
   }
@@ -32,6 +34,18 @@ export class RegisterPage implements OnInit {
     return this.form.get('password') as FormControl;
   }
 
+  get confirmPasswordControl(): FormControl {
+    return this.form.get('confirmPassword') as FormControl;
+  }
+
+  // ✅ Validador personalizado
+  private passwordsMatchValidator(group: FormGroup): ValidationErrors | null {
+    const password = group.get('password')?.value;
+    const confirmPassword = group.get('confirmPassword')?.value;
+    return password === confirmPassword ? null : { passwordMismatch: true };
+  }
+
+  // ✅ Registro
   onRegister() {
     if (this.form.invalid) {
       console.log('❌ Formulario inválido');
@@ -41,9 +55,7 @@ export class RegisterPage implements OnInit {
     const user = this.form.value;
 
     const users = JSON.parse(localStorage.getItem('users') || '[]');
-
     users.push(user);
-
     localStorage.setItem('users', JSON.stringify(users));
 
     console.log('✅ Usuario registrado:', user);

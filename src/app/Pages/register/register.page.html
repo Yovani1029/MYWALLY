@@ -9,8 +9,12 @@
     <app-input label="Nombre" placeholder="Ingresa tu nombre" [control]="nombreControl"></app-input>
     <app-input label="Email" placeholder="ejemplo@correo.com" type="email" [control]="emailControl"></app-input>
     <app-input label="Contraseña" placeholder="••••••" type="password" [control]="passwordControl"></app-input>
-  
+    <app-input label="Confirma Contraseña" placeholder="••••••" type="password" [control]="confirmPasswordControl"></app-input>
+    
+    <div *ngIf="form.errors?.['passwordMismatch'] && form.touched" class="error-msg">
+      ⚠️ Las contraseñas no coinciden
+    </div>
+
     <app-button label="Registrarse" [disabled]="form.invalid"></app-button>
   </form>
-  
 </ion-content>
