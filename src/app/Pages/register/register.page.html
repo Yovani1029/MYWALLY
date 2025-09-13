@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Registro</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="form" (ngSubmit)="onRegister()">
+    <app-input label="Nombre" placeholder="Ingresa tu nombre" [control]="nombreControl"></app-input>
+    <app-input label="Email" placeholder="ejemplo@correo.com" type="email" [control]="emailControl"></app-input>
+    <app-input label="Contraseña" placeholder="••••••" type="password" [control]="passwordControl"></app-input>
+  
+    <app-button label="Registrarse" [disabled]="form.invalid"></app-button>
+  </form>
+  
+</ion-content>
